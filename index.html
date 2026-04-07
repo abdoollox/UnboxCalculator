@@ -9,10 +9,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Nunito',sans-serif;
+  font-family:'Bebas Neue',sans-serif;
   background:#111;
   color:#fff;
   min-height:100vh;
+  letter-spacing:0.03em;
 }
 
 /* ── BG TEXTURE ── */
@@ -41,7 +42,7 @@ h1{
   line-height:0.95;letter-spacing:0.02em;
   color:#fff;margin-bottom:0.4rem;
 }
-h1 span{color:#FFCC00;-webkit-text-stroke:1px #FFCC00;}
+h1 span{color:#FFCC00;}
 .subtitle{font-size:14px;color:#888;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
 
 /* ── CARDS ── */
@@ -72,7 +73,7 @@ h1 span{color:#FFCC00;-webkit-text-stroke:1px #FFCC00;}
 input[type=number]{
   width:100%;background:#111;
   border:2px solid #333;
-  color:#fff;font-family:'Nunito',sans-serif;
+  color:#fff;font-family:'Bebas Neue',sans-serif;
   font-size:28px;font-weight:900;
   padding:14px 16px 14px 40px;
   outline:none;transition:border-color 0.2s;
@@ -83,12 +84,6 @@ input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=number]:focus{border-color:#FFCC00;}
 
 /* ── SLIDER ── */
-.slider-header{
-  display:flex;justify-content:space-between;align-items:baseline;
-  margin-bottom:14px;margin-top:1.5rem;
-}
-.slider-label{font-size:10px;font-weight:900;letter-spacing:0.18em;text-transform:uppercase;color:#FFCC00;}
-.slider-value{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:0.05em;}
 
 input[type=range]{
   -webkit-appearance:none;appearance:none;
@@ -152,7 +147,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
   font-family:'Bebas Neue',sans-serif;
   font-size:2.4rem;color:#fff;line-height:1;letter-spacing:0.05em;
 }
-.plan-months sup{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#888;}
+.plan-months sup{font-family:'Bebas Neue',sans-serif;font-size:13px;font-weight:800;color:#888;}
 .plan-sep{border:none;border-top:1px solid #2a2a2a;margin:10px 0;}
 .plan-monthly{
   font-family:'Bebas Neue',sans-serif;
@@ -187,6 +182,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
 .result-grand .lbl{font-size:13px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:0.05em;}
 .result-grand .val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#111;letter-spacing:0.05em;}
 
+
 /* ── ADMIN OVERLAY ── */
 .admin-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.95);
@@ -218,7 +214,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
 }
 .admin-field input{
   width:100%;background:#111;border:2px solid #333;
-  color:#fff;font-family:'Nunito',sans-serif;
+  color:#fff;font-family:'Bebas Neue',sans-serif;
   font-size:20px;font-weight:900;padding:10px 14px;
   outline:none;-moz-appearance:textfield;border-radius:0;
 }
@@ -228,7 +224,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
 .admin-hint{font-size:11px;color:#555;margin-top:4px;font-weight:700;}
 .admin-save{
   width:100%;padding:14px;background:#FFCC00;color:#111;
-  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;font-weight:900;
   border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;
   clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
   margin-top:0.5rem;
@@ -238,7 +234,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
 .admin-pin-wrap label{display:block;font-size:10px;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;color:#FFCC00;margin-bottom:8px;}
 .admin-pin-input{
   width:100%;background:#111;border:2px solid #333;
-  color:#fff;font-family:'Nunito',sans-serif;
+  color:#fff;font-family:'Bebas Neue',sans-serif;
   font-size:20px;font-weight:900;padding:10px 14px;
   outline:none;border-radius:0;letter-spacing:0.3em;
 }
@@ -246,7 +242,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;bo
 .admin-pin-err{font-size:12px;color:#ff4444;margin-top:6px;font-weight:700;display:none;}
 .admin-login-btn{
   width:100%;padding:14px;background:#FFCC00;color:#111;
-  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  font-family:'Bebas Neue',sans-serif;font-size:16px;font-weight:900;
   border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;
   clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
 }
@@ -313,7 +309,7 @@ footer span{color:#666;}
   <!-- Header -->
   <header id="main-header">
     <div class="brand-tag">Nasiya Savdo</div>
-    <h1>NASIYA<br><span>KALKUL</span>YATOR</h1>
+    <h1>NASIYA<br><span>KALKULYATOR</span></h1>
     <p class="subtitle">Qulay muddat — oson to'lov</p>
   </header>
 
@@ -326,12 +322,10 @@ footer span{color:#666;}
     </div>
     <div class="error-msg" id="err">Boshlang'ich to'lov narxdan oshmasligi kerak!</div>
 
-    <div class="slider-header">
-      <span class="slider-label">Boshlang'ich to'lov</span>
-      <div class="down-input-wrapper">
-        <span class="down-sym">$</span>
-        <input type="number" id="down-input" value="100" min="0" oninput="onDownInputChange()" />
-      </div>
+    <div class="card-label" style="margin-top: 1.5rem;">Boshlang'ich to'lov</div>
+    <div class="price-wrap">
+      <span class="price-sym">$</span>
+      <input type="number" id="downInput" value="100" min="0" step="1" oninput="onDownInputChange()" />
     </div>
     <input type="range" id="downSlider" min="0" max="400" step="10" value="100" oninput="onSliderChange()" />
     <div class="slider-ticks">
@@ -400,11 +394,7 @@ footer span{color:#666;}
         <span class="val" id="r-down">$100</span>
       </div>
       <div class="r-row">
-        <span class="lbl">Oylik to'lov × <span id="r-months">3</span> oy</span>
-        <span class="val" id="r-monthly-disp">$110</span>
-      </div>
-      <div class="r-row">
-        <span class="lbl">Nasiya jami</span>
+        <span class="lbl">Nasiya jami (<span id="r-months">3</span> x <span id="r-monthly-disp">$110</span>)</span>
         <span class="val" id="r-installments">$330</span>
       </div>
     </div>
@@ -424,43 +414,6 @@ var rates = {3:25, 6:55, 9:75, 12:85};
 var ADMIN_PIN = '1234';
 var headerTaps = 0;
 var tapTimer = null;
-
-
-/* ── MANUAL DOWNPAYMENT INPUT ── */
-.down-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  justify-content: flex-end;
-  width: 120px;
-}
-.down-sym {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  color: #fff;
-  letter-spacing: 0.05em;
-}
-#down-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid #333;
-  color: #fff;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 2rem;
-  padding: 0 4px;
-  outline: none;
-  text-align: right;
-  transition: border-color 0.2s;
-  -moz-appearance: textfield;
-}
-#down-input::-webkit-inner-spin-button,
-#down-input::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-}
-#down-input:focus {
-  border-bottom-color: #FFCC00;
-}
 
 // ── Header secret tap ──
 document.getElementById('main-header').addEventListener('click', function(){
@@ -513,30 +466,27 @@ document.getElementById('admin-overlay').addEventListener('click', function(e){
 
 // ── Calc ──
 function getPrice(){ return parseFloat(document.getElementById('price').value) || 0; }
-function getDown(){  return parseFloat(document.getElementById('down-input').value) || 0; }
+function getDown(){  return parseFloat(document.getElementById('downInput').value) || 0; }
 
 function onPriceChange(){
   var price = getPrice();
   var slider = document.getElementById('downSlider');
+  var dInput = document.getElementById('downInput');
   slider.max = price;
   document.getElementById('tick-max').textContent = '$' + price;
-  if(parseFloat(slider.value) > price) slider.value = price;
+  if(parseFloat(slider.value) > price) {
+    slider.value = price;
+    dInput.value = price;
+  }
   calc();
 }
 function onSliderChange(){
   var val = parseInt(document.getElementById('downSlider').value);
-  document.getElementById('down-input').value = val;
+  document.getElementById('downInput').value = val;
   calc();
 }
-
 function onDownInputChange(){
-  var val = parseFloat(document.getElementById('down-input').value) || 0;
-  var price = getPrice();
-  
-  // Xatolarni bloklash (Failure mode prevention)
-  if(val < 0) val = 0;
-  if(val > price) val = price;
-  
+  var val = parseFloat(document.getElementById('downInput').value) || 0;
   document.getElementById('downSlider').value = val;
   calc();
 }
@@ -551,7 +501,6 @@ function calc(){
   document.getElementById('s-price').textContent = '$' + Math.round(price);
   document.getElementById('s-down').textContent  = '$' + Math.round(down);
   document.getElementById('s-rest').textContent  = '$' + Math.round(rest);
-  document.getElementById('down-input').value = Math.round(down);
   [3,6,9,12].forEach(function(m){
     var monthly = Math.round(rest * (1 + rates[m]/100) / m);
     document.getElementById('m'+m).textContent = '$' + monthly;
