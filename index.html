@@ -407,11 +407,44 @@ footer span{color:#666;}
   <footer>Barcha narxlar <span>AQSh dollari ($)</span> hisobida</footer>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
 // ── State ──
 var selectedPlan = null;
 var defaultRates = {3:25, 6:55, 9:75, 12:85};
 var rates = JSON.parse(localStorage.getItem('nasiya_rates')) || defaultRates;
+
+// ── Firebase Sozlamalari ──
+var firebaseConfig = {
+  apiKey: "AIzaSyC95dL7qV74ncHC6495vDAzz2Mc3i2e_WA",
+  authDomain: "unbox-kalkulyator.firebaseapp.com",
+  databaseURL: "https://unbox-kalkulyator-default-rtdb.firebaseio.com",
+  projectId: "unbox-kalkulyator",
+  storageBucket: "unbox-kalkulyator.firebasestorage.app",
+  messagingSenderId: "121664720251",
+  appId: "1:121664720251:web:4d1390d7bfd450a802c1de"
+};
+
+var db = null;
+// Agar apiKey o'zgartirilgan bo'lsa, Firebase-ni ulaymiz
+if(firebaseConfig.apiKey !== "API_KEY_NI_SHU_YERGA_YOZING"){
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  
+  // Bazadan (Realtime Database) 'nasiya_rates' ni doimiy o'qib turish
+  db.ref('nasiya_rates').on('value', function(snapshot) {
+    if(snapshot.exists()) {
+      rates = snapshot.val();
+      localStorage.setItem('nasiya_rates', JSON.stringify(rates));
+      calc();
+      if(selectedPlan) updateResult();
+    }
+  });
+}
+
 var ADMIN_PIN = '1234';
 var headerTaps = 0;
 var tapTimer = null;
@@ -457,7 +490,15 @@ function saveAdmin(){
   rates[6]  = parseFloat(document.getElementById('a-r6').value)  || 0;
   rates[9]  = parseFloat(document.getElementById('a-r9').value)  || 0;
   rates[12] = parseFloat(document.getElementById('a-r12').value) || 0;
+  
+  // Mahalliyni yangilaymiz
   localStorage.setItem('nasiya_rates', JSON.stringify(rates));
+  
+  // Firebasega yuboramiz (agar ulangan bo'lsa)
+  if(db) {
+    db.ref('nasiya_rates').set(rates);
+  }
+  
   calc();
   if(selectedPlan) updateResult();
   closeAdmin();
