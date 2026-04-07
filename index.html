@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nasiya Kalkulyatori</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:#111;
+  color:#fff;
+  min-height:100vh;
+}
+
+/* ── BG TEXTURE ── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,204,0,0.03) 40px,rgba(255,204,0,0.03) 41px),
+    repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(255,204,0,0.03) 40px,rgba(255,204,0,0.03) 41px);
+  pointer-events:none;z-index:0;
+}
+
+.page{position:relative;z-index:1;max-width:600px;margin:0 auto;padding:2rem 1.25rem 5rem}
+
+/* ── HEADER ── */
+header{text-align:center;margin-bottom:2.5rem;cursor:default}
+.brand-tag{
+  display:inline-block;
+  background:#FFCC00;color:#111;
+  font-size:11px;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;
+  padding:5px 16px;border-radius:0;margin-bottom:1rem;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+}
+h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,12vw,5.5rem);
+  line-height:0.95;letter-spacing:0.02em;
+  color:#fff;margin-bottom:0.4rem;
+}
+h1 span{color:#FFCC00;-webkit-text-stroke:1px #FFCC00;}
+.subtitle{font-size:14px;color:#888;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
+
+/* ── CARDS ── */
+.card{
+  background:#1a1a1a;
+  border:2px solid #2a2a2a;
+  border-radius:0;
+  padding:1.5rem;
+  margin-bottom:1.25rem;
+  position:relative;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:#FFCC00;
+}
+.card-label{
+  font-size:10px;font-weight:900;letter-spacing:0.18em;text-transform:uppercase;
+  color:#FFCC00;margin-bottom:1.25rem;display:flex;align-items:center;gap:8px;
+}
+.card-label::after{content:'';flex:1;height:1px;background:rgba(255,204,0,0.2);}
+
+/* ── PRICE INPUT ── */
+.price-wrap{position:relative;}
+.price-sym{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  font-size:22px;font-weight:900;color:#FFCC00;pointer-events:none;
+}
+input[type=number]{
+  width:100%;background:#111;
+  border:2px solid #333;
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:28px;font-weight:900;
+  padding:14px 16px 14px 40px;
+  outline:none;transition:border-color 0.2s;
+  -moz-appearance:textfield;border-radius:0;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]:focus{border-color:#FFCC00;}
+
+/* ── SLIDER ── */
+.slider-header{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:14px;margin-top:1.5rem;
+}
+.slider-label{font-size:10px;font-weight:900;letter-spacing:0.18em;text-transform:uppercase;color:#FFCC00;}
+.slider-value{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#fff;letter-spacing:0.05em;}
+
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:8px;background:#222;border-radius:0;
+  outline:none;cursor:pointer;border:none;
+}
+input[type=range]::-webkit-slider-runnable-track{height:8px;background:#222;border-radius:0;}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:26px;height:26px;
+  margin-top:-9px;
+  background:#FFCC00;border-radius:0;
+  border:3px solid #111;cursor:grab;
+  transition:transform 0.15s;
+  clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);
+}
+input[type=range]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.15);}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;background:#FFCC00;border:3px solid #111;cursor:grab;border-radius:0;}
+.slider-ticks{display:flex;justify-content:space-between;font-size:11px;color:#555;margin-top:6px;font-weight:700;}
+
+/* ── SUMMARY ── */
+.sep{border:none;border-top:1px solid #2a2a2a;margin:1.25rem 0;}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:15px;}
+.sum-row .lbl{color:#666;font-weight:700;}
+.sum-row .val{font-weight:900;color:#fff;}
+.sum-row.big .val{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#FFCC00;letter-spacing:0.05em;}
+
+.error-msg{
+  font-size:12px;color:#ff4444;margin-top:8px;
+  display:none;padding:6px 10px;background:rgba(255,68,68,0.1);
+  font-weight:700;
+}
+
+/* ── PLANS ── */
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:420px){.plans{grid-template-columns:1fr;}}
+
+.plan{
+  background:#111;border:2px solid #2a2a2a;
+  padding:1.1rem 1rem;text-align:center;cursor:pointer;
+  transition:border-color 0.2s,background 0.2s;
+  position:relative;overflow:hidden;user-select:none;
+}
+.plan:hover{border-color:#FFCC00;}
+.plan.selected{
+  border-color:#FFCC00;
+  background:rgba(255,204,0,0.07);
+}
+.plan.selected::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:#FFCC00;
+}
+.plan-tag{
+  position:absolute;top:0;right:0;
+  background:#FFCC00;color:#111;
+  font-size:9px;font-weight:900;letter-spacing:0.1em;
+  padding:3px 8px;text-transform:uppercase;
+  display:none;
+}
+.plan.popular .plan-tag{display:block;}
+.plan-months{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.4rem;color:#fff;line-height:1;letter-spacing:0.05em;
+}
+.plan-months sup{font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#888;}
+.plan-sep{border:none;border-top:1px solid #2a2a2a;margin:10px 0;}
+.plan-monthly{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;color:#FFCC00;letter-spacing:0.05em;
+}
+.plan-monthly-lbl{font-size:11px;color:#555;font-weight:700;margin-top:2px;}
+.plan-check{
+  width:22px;height:22px;background:#FFCC00;
+  margin:10px auto 0;display:none;align-items:center;justify-content:center;
+  clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);
+}
+.plan-check::after{content:'✓';color:#111;font-size:13px;font-weight:900;}
+.plan.selected .plan-check{display:flex;}
+
+/* ── RESULT ── */
+.result-card{
+  background:#1a1a1a;border:2px solid #FFCC00;
+  padding:1.5rem;margin-bottom:1.25rem;
+  display:none;position:relative;
+}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:#FFCC00;}
+.result-card.show{display:block;animation:fadeUp 0.35s ease both;}
+.result-rows{margin-bottom:1rem;}
+.r-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2a2a2a;}
+.r-row:last-child{border-bottom:none;}
+.r-row .lbl{font-size:13px;color:#888;font-weight:700;}
+.r-row .val{font-size:15px;font-weight:900;color:#fff;}
+.result-grand{
+  background:#FFCC00;padding:1rem 1.25rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.result-grand .lbl{font-size:13px;font-weight:900;color:#111;text-transform:uppercase;letter-spacing:0.05em;}
+.result-grand .val{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#111;letter-spacing:0.05em;}
+
+/* ── TELEGRAM BTN ── */
+.tg-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:1rem;padding:16px 20px;
+  background:#2AABEE;color:#fff;
+  font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;
+  text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;
+  transition:background 0.18s,transform 0.15s;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+.tg-btn:hover{background:#1d96d4;transform:translateY(-2px);}
+.tg-btn:active{transform:scale(0.98);}
+
+/* ── ADMIN OVERLAY ── */
+.admin-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.95);
+  z-index:999;display:none;align-items:center;justify-content:center;
+}
+.admin-overlay.open{display:flex;}
+.admin-box{
+  background:#1a1a1a;border:2px solid #FFCC00;
+  width:min(480px,92vw);padding:2rem;
+  position:relative;max-height:90vh;overflow-y:auto;
+}
+.admin-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:#FFCC00;}
+.admin-title{
+  font-family:'Bebas Neue',sans-serif;font-size:2rem;
+  color:#FFCC00;letter-spacing:0.05em;margin-bottom:1.5rem;
+}
+.admin-close{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:2px solid #333;color:#888;
+  width:32px;height:32px;cursor:pointer;
+  font-size:16px;font-weight:900;display:flex;align-items:center;justify-content:center;
+}
+.admin-close:hover{border-color:#FFCC00;color:#FFCC00;}
+.admin-field{margin-bottom:1.25rem;}
+.admin-field label{
+  display:block;font-size:10px;font-weight:900;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:#FFCC00;margin-bottom:8px;
+}
+.admin-field input{
+  width:100%;background:#111;border:2px solid #333;
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:20px;font-weight:900;padding:10px 14px;
+  outline:none;-moz-appearance:textfield;border-radius:0;
+}
+.admin-field input::-webkit-inner-spin-button,
+.admin-field input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.admin-field input:focus{border-color:#FFCC00;}
+.admin-hint{font-size:11px;color:#555;margin-top:4px;font-weight:700;}
+.admin-save{
+  width:100%;padding:14px;background:#FFCC00;color:#111;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+  margin-top:0.5rem;
+}
+.admin-save:hover{background:#e6b800;}
+.admin-pin-wrap{margin-bottom:1.5rem;}
+.admin-pin-wrap label{display:block;font-size:10px;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;color:#FFCC00;margin-bottom:8px;}
+.admin-pin-input{
+  width:100%;background:#111;border:2px solid #333;
+  color:#fff;font-family:'Nunito',sans-serif;
+  font-size:20px;font-weight:900;padding:10px 14px;
+  outline:none;border-radius:0;letter-spacing:0.3em;
+}
+.admin-pin-input:focus{border-color:#FFCC00;}
+.admin-pin-err{font-size:12px;color:#ff4444;margin-top:6px;font-weight:700;display:none;}
+.admin-login-btn{
+  width:100%;padding:14px;background:#FFCC00;color:#111;
+  font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;
+  border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;
+  clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);
+}
+.admin-login-btn:hover{background:#e6b800;}
+
+/* pin screen vs settings screen */
+#admin-pin-screen{display:block;}
+#admin-settings-screen{display:none;}
+
+footer{text-align:center;margin-top:3rem;font-size:12px;color:#444;font-weight:700;letter-spacing:0.05em;}
+footer span{color:#666;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<!-- Admin Overlay -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-box">
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+
+    <!-- PIN screen -->
+    <div id="admin-pin-screen">
+      <div class="admin-title">Admin Panel</div>
+      <div class="admin-pin-wrap">
+        <label>Parol kiriting</label>
+        <input class="admin-pin-input" type="password" id="admin-pin" placeholder="••••" onkeydown="if(event.key==='Enter')checkPin()" />
+        <div class="admin-pin-err" id="pin-err">Parol noto'g'ri!</div>
+      </div>
+      <button class="admin-login-btn" onclick="checkPin()">Kirish</button>
+    </div>
+
+    <!-- Settings screen -->
+    <div id="admin-settings-screen">
+      <div class="admin-title">Tariflar</div>
+      <div class="admin-field">
+        <label>3 oylik ustama (%)</label>
+        <input type="number" id="a-r3" value="25" min="0" max="999" />
+        <div class="admin-hint">Hozirgi: <span id="a-cur3">25</span>%</div>
+      </div>
+      <div class="admin-field">
+        <label>6 oylik ustama (%)</label>
+        <input type="number" id="a-r6" value="55" min="0" max="999" />
+        <div class="admin-hint">Hozirgi: <span id="a-cur6">55</span>%</div>
+      </div>
+      <div class="admin-field">
+        <label>9 oylik ustama (%)</label>
+        <input type="number" id="a-r9" value="75" min="0" max="999" />
+        <div class="admin-hint">Hozirgi: <span id="a-cur9">75</span>%</div>
+      </div>
+      <div class="admin-field">
+        <label>12 oylik ustama (%)</label>
+        <input type="number" id="a-r12" value="85" min="0" max="999" />
+        <div class="admin-hint">Hozirgi: <span id="a-cur12">85</span>%</div>
+      </div>
+      <button class="admin-save" onclick="saveAdmin()">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header id="main-header">
+    <div class="brand-tag">Nasiya Savdo</div>
+    <h1>NASIYA<br><span>KALKUL</span>YATOR</h1>
+    <p class="subtitle">Qulay muddat — oson to'lov</p>
+  </header>
+
+  <!-- Card 1: Price + Slider -->
+  <div class="card">
+    <div class="card-label">Mahsulot narxi</div>
+    <div class="price-wrap">
+      <span class="price-sym">$</span>
+      <input type="number" id="price" value="400" min="0" step="1" oninput="onPriceChange()" />
+    </div>
+    <div class="error-msg" id="err">Boshlang'ich to'lov narxdan oshmasligi kerak!</div>
+
+    <div class="slider-header">
+      <span class="slider-label">Boshlang'ich to'lov</span>
+      <span class="slider-value">$<span id="down-display">100</span></span>
+    </div>
+    <input type="range" id="downSlider" min="0" max="400" step="10" value="100" oninput="onSliderChange()" />
+    <div class="slider-ticks">
+      <span>$0</span>
+      <span id="tick-max">$400</span>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="sum-row">
+      <span class="lbl">Mahsulot narxi</span>
+      <span class="val" id="s-price">$400</span>
+    </div>
+    <div class="sum-row">
+      <span class="lbl">Boshlang'ich to'lov</span>
+      <span class="val" id="s-down">$100</span>
+    </div>
+    <div class="sum-row big">
+      <span class="lbl">Qolgan summa</span>
+      <span class="val" id="s-rest">$300</span>
+    </div>
+  </div>
+
+  <!-- Card 2: Plans -->
+  <div class="card">
+    <div class="card-label">To'lov rejasini tanlang</div>
+    <div class="plans">
+      <div class="plan popular" id="plan-3" onclick="selectPlan(3)">
+        <div class="plan-tag">Mashhur</div>
+        <div class="plan-months">3 <sup>oy</sup></div>
+        <div class="plan-sep"></div>
+        <div class="plan-monthly" id="m3">$110</div>
+        <div class="plan-monthly-lbl">har oyda</div>
+        <div class="plan-check"></div>
+      </div>
+      <div class="plan" id="plan-6" onclick="selectPlan(6)">
+        <div class="plan-months">6 <sup>oy</sup></div>
+        <div class="plan-sep"></div>
+        <div class="plan-monthly" id="m6">$64</div>
+        <div class="plan-monthly-lbl">har oyda</div>
+        <div class="plan-check"></div>
+      </div>
+      <div class="plan" id="plan-9" onclick="selectPlan(9)">
+        <div class="plan-months">9 <sup>oy</sup></div>
+        <div class="plan-sep"></div>
+        <div class="plan-monthly" id="m9">$42</div>
+        <div class="plan-monthly-lbl">har oyda</div>
+        <div class="plan-check"></div>
+      </div>
+      <div class="plan" id="plan-12" onclick="selectPlan(12)">
+        <div class="plan-months">12 <sup>oy</sup></div>
+        <div class="plan-sep"></div>
+        <div class="plan-monthly" id="m12">$33</div>
+        <div class="plan-monthly-lbl">har oyda</div>
+        <div class="plan-check"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result card -->
+  <div class="result-card" id="result-card">
+    <div class="card-label">Umumiy hisob-kitob</div>
+    <div class="result-rows">
+      <div class="r-row">
+        <span class="lbl">Boshlang'ich to'lov</span>
+        <span class="val" id="r-down">$100</span>
+      </div>
+      <div class="r-row">
+        <span class="lbl">Oylik to'lov × <span id="r-months">3</span> oy</span>
+        <span class="val" id="r-monthly-disp">$110</span>
+      </div>
+      <div class="r-row">
+        <span class="lbl">Nasiya jami</span>
+        <span class="val" id="r-installments">$330</span>
+      </div>
+    </div>
+    <div class="result-grand">
+      <span class="lbl">Jami to'lov</span>
+      <span class="val" id="r-grand">$430</span>
+    </div>
+    <a href="https://t.me/abdoollox?text=Assalamu+alaykum!+Galaxy+S23+Ultra+telefonini+xarid+qilish+bo'yicha+yozyapman." target="_blank" class="tg-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.93 7.23l-1.68 7.92c-.12.56-.46.7-.93.43l-2.57-1.89-1.24 1.19c-.14.14-.26.26-.52.26l.19-2.63 4.82-4.35c.21-.19-.05-.29-.32-.1L8.37 14.4 5.84 13.6c-.55-.17-.56-.55.12-.82l8.62-3.32c.46-.17.86.11.35.82z"/></svg>
+      Xarid qilish
+    </a>
+  </div>
+
+  <footer>Barcha narxlar <span>AQSh dollari ($)</span> hisobida</footer>
+</div>
+
+<script>
+// ── State ──
+var selectedPlan = null;
+var rates = {3:25, 6:55, 9:75, 12:85};
+var ADMIN_PIN = '1234';
+var headerTaps = 0;
+var tapTimer = null;
+
+// ── Header secret tap ──
+document.getElementById('main-header').addEventListener('click', function(){
+  headerTaps++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(function(){ headerTaps = 0; }, 2000);
+  if(headerTaps >= 5){ openAdmin(); headerTaps = 0; }
+});
+
+// ── Admin ──
+function openAdmin(){
+  document.getElementById('admin-pin').value = '';
+  document.getElementById('pin-err').style.display = 'none';
+  document.getElementById('admin-pin-screen').style.display = 'block';
+  document.getElementById('admin-settings-screen').style.display = 'none';
+  document.getElementById('admin-overlay').classList.add('open');
+}
+function closeAdmin(){
+  document.getElementById('admin-overlay').classList.remove('open');
+}
+function checkPin(){
+  var val = document.getElementById('admin-pin').value;
+  if(val === ADMIN_PIN){
+    document.getElementById('admin-pin-screen').style.display = 'none';
+    document.getElementById('admin-settings-screen').style.display = 'block';
+    document.getElementById('a-r3').value  = rates[3];
+    document.getElementById('a-r6').value  = rates[6];
+    document.getElementById('a-r9').value  = rates[9];
+    document.getElementById('a-r12').value = rates[12];
+    document.getElementById('a-cur3').textContent  = rates[3];
+    document.getElementById('a-cur6').textContent  = rates[6];
+    document.getElementById('a-cur9').textContent  = rates[9];
+    document.getElementById('a-cur12').textContent = rates[12];
+  } else {
+    document.getElementById('pin-err').style.display = 'block';
+  }
+}
+function saveAdmin(){
+  rates[3]  = parseFloat(document.getElementById('a-r3').value)  || 0;
+  rates[6]  = parseFloat(document.getElementById('a-r6').value)  || 0;
+  rates[9]  = parseFloat(document.getElementById('a-r9').value)  || 0;
+  rates[12] = parseFloat(document.getElementById('a-r12').value) || 0;
+  calc();
+  if(selectedPlan) updateResult();
+  closeAdmin();
+}
+document.getElementById('admin-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeAdmin();
+});
+
+// ── Calc ──
+function getPrice(){ return parseFloat(document.getElementById('price').value) || 0; }
+function getDown(){  return parseFloat(document.getElementById('downSlider').value) || 0; }
+
+function onPriceChange(){
+  var price = getPrice();
+  var slider = document.getElementById('downSlider');
+  slider.max = price;
+  document.getElementById('tick-max').textContent = '$' + price;
+  if(parseFloat(slider.value) > price) slider.value = price;
+  calc();
+}
+function onSliderChange(){
+  var val = parseInt(document.getElementById('downSlider').value);
+  document.getElementById('down-display').textContent = val;
+  calc();
+}
+
+function calc(){
+  var price = getPrice();
+  var down  = getDown();
+  var err   = document.getElementById('err');
+  if(down > price){ err.style.display='block'; return; }
+  err.style.display = 'none';
+  var rest = price - down;
+  document.getElementById('s-price').textContent = '$' + Math.round(price);
+  document.getElementById('s-down').textContent  = '$' + Math.round(down);
+  document.getElementById('s-rest').textContent  = '$' + Math.round(rest);
+  document.getElementById('down-display').textContent = Math.round(down);
+  [3,6,9,12].forEach(function(m){
+    var monthly = Math.round(rest * (1 + rates[m]/100) / m);
+    document.getElementById('m'+m).textContent = '$' + monthly;
+  });
+  if(selectedPlan) updateResult();
+}
+
+function updateResult(){
+  var price = getPrice(), down = getDown();
+  if(down > price) return;
+  var rest       = price - down;
+  var m          = selectedPlan;
+  var nasiyaTotal = Math.round(rest * (1 + rates[m]/100));
+  var monthly    = Math.round(nasiyaTotal / m);
+  var grand      = Math.round(down + nasiyaTotal);
+  document.getElementById('r-down').textContent       = '$' + Math.round(down);
+  document.getElementById('r-months').textContent     = m;
+  document.getElementById('r-monthly-disp').textContent = '$' + monthly;
+  document.getElementById('r-installments').textContent = '$' + nasiyaTotal;
+  document.getElementById('r-grand').textContent      = '$' + grand;
+}
+
+function selectPlan(m){
+  [3,6,9,12].forEach(function(x){ document.getElementById('plan-'+x).classList.remove('selected'); });
+  document.getElementById('plan-'+m).classList.add('selected');
+  selectedPlan = m;
+  updateResult();
+  var rc = document.getElementById('result-card');
+  rc.classList.add('show');
+  setTimeout(function(){ rc.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 80);
+}
+
+onPriceChange();
+</script>
+</body>
+</html>
