@@ -328,7 +328,10 @@ footer span{color:#666;}
 
     <div class="slider-header">
       <span class="slider-label">Boshlang'ich to'lov</span>
-      <span class="slider-value">$<span id="down-display">100</span></span>
+      <div class="down-input-wrapper">
+        <span class="down-sym">$</span>
+        <input type="number" id="down-input" value="100" min="0" oninput="onDownInputChange()" />
+      </div>
     </div>
     <input type="range" id="downSlider" min="0" max="400" step="10" value="100" oninput="onSliderChange()" />
     <div class="slider-ticks">
@@ -422,6 +425,43 @@ var ADMIN_PIN = '1234';
 var headerTaps = 0;
 var tapTimer = null;
 
+
+/* ── MANUAL DOWNPAYMENT INPUT ── */
+.down-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  width: 120px;
+}
+.down-sym {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+#down-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #333;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  padding: 0 4px;
+  outline: none;
+  text-align: right;
+  transition: border-color 0.2s;
+  -moz-appearance: textfield;
+}
+#down-input::-webkit-inner-spin-button,
+#down-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+#down-input:focus {
+  border-bottom-color: #FFCC00;
+}
+
 // ── Header secret tap ──
 document.getElementById('main-header').addEventListener('click', function(){
   headerTaps++;
@@ -473,7 +513,7 @@ document.getElementById('admin-overlay').addEventListener('click', function(e){
 
 // ── Calc ──
 function getPrice(){ return parseFloat(document.getElementById('price').value) || 0; }
-function getDown(){  return parseFloat(document.getElementById('downSlider').value) || 0; }
+function getDown(){  return parseFloat(document.getElementById('down-input').value) || 0; }
 
 function onPriceChange(){
   var price = getPrice();
@@ -485,7 +525,19 @@ function onPriceChange(){
 }
 function onSliderChange(){
   var val = parseInt(document.getElementById('downSlider').value);
-  document.getElementById('down-display').textContent = val;
+  document.getElementById('down-input').value = val;
+  calc();
+}
+
+function onDownInputChange(){
+  var val = parseFloat(document.getElementById('down-input').value) || 0;
+  var price = getPrice();
+  
+  // Xatolarni bloklash (Failure mode prevention)
+  if(val < 0) val = 0;
+  if(val > price) val = price;
+  
+  document.getElementById('downSlider').value = val;
   calc();
 }
 
@@ -499,7 +551,7 @@ function calc(){
   document.getElementById('s-price').textContent = '$' + Math.round(price);
   document.getElementById('s-down').textContent  = '$' + Math.round(down);
   document.getElementById('s-rest').textContent  = '$' + Math.round(rest);
-  document.getElementById('down-display').textContent = Math.round(down);
+  document.getElementById('down-input').value = Math.round(down);
   [3,6,9,12].forEach(function(m){
     var monthly = Math.round(rest * (1 + rates[m]/100) / m);
     document.getElementById('m'+m).textContent = '$' + monthly;
